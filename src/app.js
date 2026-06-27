@@ -34,10 +34,25 @@ class Application {
   _initializeMiddlewares() {
     // Security
     this.app.use(helmet());
-    this.app.use(cors({
-      origin: process.env.CLIENT_URL || '*',
-      credentials: true,
-    }));
+    // CORS configuration
+    const clientUrlEnv = process.env.CLIENT_URL;
+    let corsOptions = {};
+
+    if (clientUrlEnv) {
+      const origins = clientUrlEnv.split(',').map(url => url.trim());
+      const isAllowAll = origins.length === 1 && origins[0] === '*';
+
+      corsOptions = {
+        origin: origins,
+        credentials: !isAllowAll, // Disable credentials if origin is explicitly '*'
+      };
+    } else {
+      corsOptions = {
+        origin: '*',
+        credentials: false, // Disable credentials if no CLIENT_URL is provided
+      };
+    }
+    this.app.use(cors(corsOptions));
 
     // Rate limiting
     const limiter = rateLimit({
