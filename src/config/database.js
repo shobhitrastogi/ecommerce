@@ -53,7 +53,7 @@ class Database {
         logger.error('Alternatively, use the standard non-SRV MongoDB URI from Atlas if SRV lookups continue to fail.');
       }
       logger.error(`MongoDB connection failed: ${error.message}`);
-      throw error;
+      process.exit(1);
     }
   }
 
