@@ -43,7 +43,7 @@ class Application {
       const isAllowAll = origins.length === 1 && origins[0] === '*';
 
       corsOptions = {
-        origin: origins,
+        origin: isAllowAll ? '*' : origins,
         credentials: !isAllowAll, // Disable credentials if origin is explicitly '*'
       };
     } else {
