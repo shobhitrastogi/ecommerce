@@ -84,11 +84,22 @@ class Application {
   }
 
   async start() {
+  try {
+    console.log("Connecting to MongoDB...");
+
     await connectDatabase();
+
+    console.log("MongoDB Connected");
+
     this.app.listen(this.port, () => {
-      logger.info(`🚀 Server running on port ${this.port} in ${process.env.NODE_ENV} mode`);
+      console.log(`Server started on ${this.port}`);
     });
+
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
   }
+}
 }
 
 module.exports = new Application();
